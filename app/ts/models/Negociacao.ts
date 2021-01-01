@@ -18,10 +18,6 @@ class Negociacao {
         return this._quantidade;
     }
 
-    set Quantidade(value){
-        this._quantidade = value;
-    }
-
     get Valor(){
         return this._valor;
     }
