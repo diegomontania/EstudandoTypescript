@@ -1,0 +1,20 @@
+{
+  "name": "primeiro-projeto-typescript",
+  "version": "1.0.0",
+  "description": "primeiro projeto utilizando typescript e visual studio code",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "start": "tsc -w"
+  },
+  "author": "diego montania",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^2.3.2"
+  }
+}
