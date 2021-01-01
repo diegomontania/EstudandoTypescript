@@ -1,6 +1,9 @@
-Primeiro projeto em typescript, estudando a linguagem na alura.com.br
+# Estudando typescript
 
-Utilização : 
-Ao clonar o repositório, instale as dependencias :
+Primeiro projeto em typescript, estudando a linguagem na [alura.com.br](https://www.alura.com.br/)
 
-npm install
+
+# Instalação e configuração do ambiente
+
+- Instalar [node.js](https://nodejs.org/en/download/)
+- Abra o projeto no [visual code](https://code.visualstudio.com/download) e faça as instalações de dependências do projeto pelo terminal, utilize : `npm install`
