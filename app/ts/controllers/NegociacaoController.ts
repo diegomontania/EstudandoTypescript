@@ -1,41 +1,40 @@
 class NegociacaoController{
 
-    // HTMLInputElement : tipo especifico de objeto para pegar os valores do doom
-    private _inputData : HTMLInputElement;
-    private _inputQuantidade : HTMLInputElement;
-    private _inputValor : HTMLInputElement;
+    // JQuery : utlizando essa lib para pegar os valores do doom em dispositivos atuais e legados
+    private _inputData : JQuery;
+    private _inputQuantidade : JQuery;
+    private _inputValor : JQuery;
 
-    // propriedade da classe responsável pelas negociacoes
-    private _negociacoes = new Negociacoes();
-
-    // view
-    private _negociacoesView = new NegociacoesView('#negociacoesView');
+    private _negociacoes = new Negociacoes(); // propriedade da classe responsável pelas negociacoes
+    private _negociacoesView = new NegociacoesView('#negociacoesView'); // tabela view
+    private _mensagemView = new MensagemView('#mensagemView');
 
     constructor(){
-        // recebe os valores vindos do html, pegando o elemento do DOM pelo 'id' 
-        // e fazendo a conversao (casting) explícito de um tipo para outro usando <>
-        this._inputData = <HTMLInputElement> document.querySelector('#data');
-        this._inputQuantidade = <HTMLInputElement> document.querySelector('#quantidade');
-        this._inputValor = <HTMLInputElement> document.querySelector('#valor');
+        // recebe os valores vindos do html, pegando o elemento do DOM pelo 'id' utilizando jquery
+        this._inputData = $('#data');
+        this._inputQuantidade = $('#quantidade');
+        this._inputValor = $('#valor');
 
         // atualiza view
-        this._negociacoesView.update();
+        this._negociacoesView.update(this._negociacoes);
     }
 
     adiciona(event: Event){
-        // evita que a página seja recarregada ao pressionar o botão
+        // evita que a página seja recarregada após clicar o botão
         event.preventDefault();
 
         // instancia classe que vai tratar as informações e passa os valores que estão digitados para a mesma fazendo a conversao de tipos
         const negociacao = new Negociacao(
-            this._inputData.valueAsDate,
-            this._inputQuantidade.valueAsNumber,
-            this._inputValor.valueAsNumber,
+            new Date(this._inputData.val().toString().replace(/-/g, ',')),
+            parseInt(this._inputQuantidade.val().toString()),
+            parseFloat(this._inputValor.val().toString()),
         );
         
-        // adiciona uma nova negociacao
+        // ações que ocorrem após adicionar uma nova negociacao: atualiza e exibe mensagem
         this._negociacoes.adiciona(negociacao);
-        
+        this._negociacoesView.update(this._negociacoes);
+        this._mensagemView.update('Negociação adicionadas com sucesso!');
+
         // #region Loop pelas negociacoes
         // faz um for para cada negociacao dentro desse objeto
         // this._negociacoes.acessaArray().forEach(negociacao =>{

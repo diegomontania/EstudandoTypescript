@@ -1,18 +1,17 @@
-class NegociacoesView{
+// passa para a classe pai o tipo 'Negociacoes'
+class NegociacoesView extends View<Negociacoes>{
 
-    private _elemento: Element;
+    // #region recebe construtor e update da classe pai : View
+    // constructor(selectorCss: string){
+    //     this._elemento = document.querySelector(selectorCss);
+    // }
+    // update(model: Negociacoes): void{
+    //     this._elemento.innerHTML = this.template(model);
+    // };
+    // #endregion 
 
-     // faz a classe receber o elemento dom
-    constructor(selectorCss: string){
-        this._elemento = document.querySelector(selectorCss);
-    }
-
-    // renderiza a tabela
-    update():void{
-        this._elemento.innerHTML = this.template();
-    };
-
-    template(): string {
+    // recebe o modelo de negociacoes
+    template(model: Negociacoes): string {
         
         // utilizando uma 'template string'
         return `
@@ -27,6 +26,17 @@ class NegociacoesView{
             </thead>
 
             <tbody>
+                <!-- pega o array e converte para map --!>
+                ${model.acessaArray().map(negociacao => {
+                    return `
+                        <tr>
+                            <td>${negociacao.Data.getDate()}/${negociacao.Data.getMonth() + 1}/${negociacao.Data.getFullYear()}</td>
+                            <td>${negociacao.Quantidade}</td>
+                            <td>${negociacao.Valor}</td>
+                            <td>${negociacao.Volume}</td>
+                        <tr>
+                     `
+                }).join('')}
             </tbody>
 
             <tfoot>
@@ -34,5 +44,4 @@ class NegociacoesView{
         </table>     
         `;
     }
-
 }
