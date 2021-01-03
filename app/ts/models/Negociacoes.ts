@@ -1,4 +1,6 @@
-class Negociacoes {
+import { Negociacao } from './Negociacao';
+
+export class Negociacoes {
     // array do tipo negociacao
     // ou private _negociacoes: Negociacao[] = []; 'açucar sintatico'
     private _negociacoes: Array<Negociacao> = [];

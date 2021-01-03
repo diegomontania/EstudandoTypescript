@@ -8,8 +8,9 @@
 // npm install @types/jquery --save-dev 
 // (versao 3.5.5)
 
+// export : para exportar classe para o namespace 'Views'
 // classe que recebe tipo generico '<T>'
-abstract class View <T> {
+export abstract class View <T> {
 
     // propriedade protected : pode ser acessada pela propria classe e quem herda-la
     protected _elemento: JQuery;

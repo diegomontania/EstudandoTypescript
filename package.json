@@ -9,13 +9,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "compile": "tsc",
-    "start": "tsc -w"
+    "start": "tsc -w",
+    "server": "lite-server --baseDir=app"
   },
   "author": "diego montania",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {
     "@types/jquery": "^3.5.5",
+    "lite-server": "^2.6.1",
     "typescript": "^2.3.2"
   }
 }

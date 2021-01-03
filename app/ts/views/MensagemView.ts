@@ -1,5 +1,7 @@
+import { View } from './View';
+
 // passa para a classe pai o tipo 'string'
-class MensagemView extends View<string>{
+export class MensagemView extends View<string>{
 
     // #region recebe construtor e update da classe pai : View
     // constructor(selectorCss: string){

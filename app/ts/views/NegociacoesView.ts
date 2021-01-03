@@ -1,5 +1,8 @@
+import { View } from './View';
+import { Negociacoes } from '../models/Negociacoes';
+
 // passa para a classe pai o tipo 'Negociacoes'
-class NegociacoesView extends View<Negociacoes>{
+export class NegociacoesView extends View<Negociacoes>{
 
     // #region recebe construtor e update da classe pai : View
     // constructor(selectorCss: string){
@@ -45,3 +48,6 @@ class NegociacoesView extends View<Negociacoes>{
         `;
     }
 }
+
+
+
