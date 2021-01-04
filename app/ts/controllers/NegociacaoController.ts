@@ -1,4 +1,4 @@
-import { Negociacoes, Negociacao } from '../models/index'
+import { Negociacoes, Negociacao, NegociacaoParcial } from '../models/index'
 import { NegociacoesView, MensagemView } from '../views/index';
 import { domInject } from '../helpers/decorators/index';
 
@@ -60,6 +60,33 @@ export class NegociacaoController{
         // });
         //#endregion
     }
+
+    importaDados(){
+
+        // testa se resposta da api foi bem sucedida
+        function respostaOK(resposta: Response){
+            if(resposta.ok){
+                return resposta;
+            } else {
+                throw new Error(resposta.statusText);
+            }
+        }
+
+        // utilizando 'fetch api' para consumir api
+        fetch('http://localhost:8080/dados')
+            .then(resposta => respostaOK(resposta))
+            .then(resposta => resposta.json())
+            // Chama uma interface 'NegociacaoParcial' para definir os campos retornados pela API
+            .then((dados: NegociacaoParcial[]) => {
+                dados
+                    // criando uma nova instancia de Negociacao, passando os dados da api
+                    .map(dado => new Negociacao(new Date(), dado.vezes, dado.montante))
+                    .forEach(negociacao => this._negociacoes.adiciona(negociacao))
+                    this._negociacoesView.update(this._negociacoes); // atualiza view
+                }) 
+            .catch(erro => console.log(erro.message));
+    }
+
 }
 
 // dias da semana em enum que serão comparados 
