@@ -3,6 +3,7 @@ import { Negociacoes, Negociacao, NegociacaoParcial } from '../models/index'
 import { NegociacoesView, MensagemView } from '../views/index';
 import { meuDomInject, atrasoExecucao } from '../helpers/decorators/index';
 import { NegociacaoService } from '../services/index';
+import { imprimeNoConsole } from '../helpers/index';
 
 // timer para evitar multiplas requisições no back-end
 let timer = 0;
@@ -51,6 +52,7 @@ export class NegociacaoController{
         );
         
         // ações que ocorrem após adicionar uma nova negociacao: atualiza e exibe mensagem
+        imprimeNoConsole(negociacao, this._negociacoes);
         this._negociacoes.adiciona(negociacao);
         this._negociacoesView.update(this._negociacoes);
         this._mensagemView.update('Negociação adicionadas com sucesso!');
@@ -85,7 +87,6 @@ export class NegociacaoController{
                 this._negociacoesView.update(this._negociacoes); // atualiza view
             });
     }
-
 }
 
 // dias da semana em enum que serão comparados 
