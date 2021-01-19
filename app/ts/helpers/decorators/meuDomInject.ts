@@ -1,4 +1,4 @@
-export function domInject(selectorCss: string) {
+export function meuDomInject(selectorCss: string) {
 
     return function(target: any, key: string){
 

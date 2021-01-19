@@ -1,2 +1,3 @@
 export * from './logarTempoDeExecucao';
-export * from './domInject';
+export * from './meuDomInject';
+export * from './atrasoExecucao';

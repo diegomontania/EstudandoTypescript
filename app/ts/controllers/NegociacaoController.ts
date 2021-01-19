@@ -1,6 +1,11 @@
+// antes de importar aqui, deve importar a classe no 'index.ts' (barril) de cada pasta (models, views, decorators...)
 import { Negociacoes, Negociacao, NegociacaoParcial } from '../models/index'
 import { NegociacoesView, MensagemView } from '../views/index';
-import { domInject } from '../helpers/decorators/index';
+import { meuDomInject, atrasoExecucao } from '../helpers/decorators/index';
+import { NegociacaoService } from '../services/index';
+
+// timer para evitar multiplas requisições no back-end
+let timer = 0;
 
 export class NegociacaoController{
 
@@ -9,28 +14,27 @@ export class NegociacaoController{
     // recebe os valores vindos do html, pegando o elemento do DOM pelo 'id' utilizando jquery
     // fazendo lazy loading (utilizando um decorator) para apenas buscar os objetos do dom quando for requisitado
     // e não diretamente no construtor da classe
-    @domInject('#data')
+    @meuDomInject('#data')
     private _inputData : JQuery;
 
-    @domInject('#quantidade')
+    @meuDomInject('#quantidade')
     private _inputQuantidade : JQuery;
 
-    @domInject('#valor')
+    @meuDomInject('#valor')
     private _inputValor : JQuery;
 
     private _negociacoes = new Negociacoes(); // propriedade da classe responsável pelas negociacoes
     private _negociacoesView = new NegociacoesView('#negociacoesView', true); // tabela view
     private _mensagemView = new MensagemView('#mensagemView');
+    private _negociacaoService = new NegociacaoService();   // propriedade responsável pela requisição da api
 
     constructor(){
         // atualiza view
         this._negociacoesView.update(this._negociacoes);
     }
 
+    @atrasoExecucao(1000)
     adiciona(event: Event){
-        // evita que a página seja recarregada após clicar o botão
-        event.preventDefault();
-
         let data = new Date(this._inputData.val().toString().replace(/-/g, ','));
 
         // se for final de semana lance uma mensagem
@@ -61,6 +65,7 @@ export class NegociacaoController{
         //#endregion
     }
 
+    @atrasoExecucao(1000)
     importaDados(){
 
         // testa se resposta da api foi bem sucedida
@@ -72,19 +77,13 @@ export class NegociacaoController{
             }
         }
 
-        // utilizando 'fetch api' para consumir api
-        fetch('http://localhost:8080/dados')
-            .then(resposta => respostaOK(resposta))
-            .then(resposta => resposta.json())
-            // Chama uma interface 'NegociacaoParcial' para definir os campos retornados pela API
-            .then((dados: NegociacaoParcial[]) => {
-                dados
-                    // criando uma nova instancia de Negociacao, passando os dados da api
-                    .map(dado => new Negociacao(new Date(), dado.vezes, dado.montante))
-                    .forEach(negociacao => this._negociacoes.adiciona(negociacao))
-                    this._negociacoesView.update(this._negociacoes); // atualiza view
-                }) 
-            .catch(erro => console.log(erro.message));
+        // recebe da api e a cada negociacao vinda da api vai diretamente para o objeto '_negociacoes'
+        this._negociacaoService
+            .obterNegociacoes(respostaOK)
+            .then(negociacoesDaAPI => {
+                negociacoesDaAPI.forEach(negociacao => this._negociacoes.adiciona(negociacao))
+                this._negociacoesView.update(this._negociacoes); // atualiza view
+            });
     }
 
 }
